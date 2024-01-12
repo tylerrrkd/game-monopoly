@@ -1,0 +1,8 @@
+<TextureAtlas imagePath="twly_dice.png">
+	<SubTexture name="1.png" x="199" y="0" width="197" height="214"/>
+	<SubTexture name="2.png" x="398" y="0" width="197" height="214"/>
+	<SubTexture name="3.png" x="199" y="216" width="197" height="214"/>
+	<SubTexture name="4.png" x="398" y="216" width="197" height="214"/>
+	<SubTexture name="5.png" x="0" y="216" width="197" height="214"/>
+	<SubTexture name="6.png" x="0" y="0" width="197" height="214"/>
+</TextureAtlas>

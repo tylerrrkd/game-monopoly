@@ -1,0 +1,996 @@
+html {
+  font-size: 16px;
+  position: relative;
+  width: 100%;
+  height: 100%; }
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-size: 0.28rem; }
+
+[v-cloak] {
+  display: none; }
+
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+div,
+img,
+a {
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+img {
+  pointer-events: none; }
+
+.animated {
+  -webkit-animation-duration: 0.7s;
+  animation-duration: 0.7s; }
+
+.zoomIn {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s; }
+
+.game {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100; }
+
+.app {
+  z-index: 120; }
+
+.tipsContainer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.8); }
+  .tipsContainer .tips {
+    text-align: center;
+    color: #000;
+    border-radius: 0.1rem; }
+    .tipsContainer .tips h3 {
+      color: #fff;
+      font-size: 0.42rem;
+      margin-bottom: 0.2rem;
+      letter-spacing: 0.08rem;
+      -webkit-text-stroke: .025rem #fbbe28;
+      margin-top: .3rem; }
+    .tipsContainer .tips p {
+      color: #999;
+      width: 5.55rem;
+      margin-top: .2rem;
+      font-size: 0.32rem; }
+    .tipsContainer .tips .closeBtn {
+      margin-top: .8rem;
+      margin-bottom: .3rem; }
+      .tipsContainer .tips .closeBtn img {
+        width: 3.5rem; }
+
+.startPage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+  z-index: 110; }
+  .startPage .sloganText {
+    position: absolute;
+    left: 50%;
+    top: 0.6rem;
+    margin-left: -2.5rem;
+    width: 5rem; }
+  .startPage .tagWrapper {
+    position: absolute;
+    top: 3.6rem;
+    width: 100%; }
+    .startPage .tagWrapper .tagText {
+      margin-left: 1.5rem;
+      width: 0.65rem; }
+  .startPage .titleText {
+    position: absolute;
+    left: 50%;
+    top: 6rem;
+    margin-left: -3.6rem;
+    width: 7.2rem;
+    -webkit-animation-delay: 0.5s;
+    animation-delay: 0.5s; }
+  .startPage .loading {
+    position: absolute;
+    left: 50%;
+    top: 9.3rem;
+    width: 4rem;
+    margin-left: -2rem;
+    text-align: center;
+    font-size: .35rem;
+    color: #fff; }
+  .startPage .btn {
+    position: absolute;
+    left: 50%;
+    top: 9.2rem;
+    margin-left: -1.75rem;
+    width: 3.5rem; }
+    .startPage .btn img {
+      width: 3.5rem; }
+  .startPage .arrow {
+    position: absolute;
+    width: 1.3rem;
+    top: 9.8rem;
+    right: 1.4rem;
+    -webkit-animation-duration: .5s;
+    animation-duration: .5s; }
+
+.shareMask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.8); }
+  .shareMask img {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    width: 5.5rem; }
+
+.topControl {
+  position: fixed;
+  left: 0;
+  top: 0.2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100%;
+  z-index: 100; }
+  .topControl .userNameBtn {
+    /*
+    * 0.26912
+    */
+    width: 3.34rem;
+    height: .9rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background-size: 100% 100%; }
+    .topControl .userNameBtn h4 {
+      text-align: center;
+      font-size: .36rem;
+      color: #fee5ab;
+      margin-bottom: .07rem;
+      -webkit-text-stroke: .018rem #e1af5e; }
+  .topControl .gameRuleBtn {
+    margin-left: 1rem; }
+    .topControl .gameRuleBtn img {
+      width: 2.5rem; }
+
+.bindPhone .closeBtn {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem; }
+  .bindPhone .closeBtn img {
+    width: 0.52rem; }
+
+.bindPhone h4 {
+  color: #fff;
+  font-size: 0.42rem;
+  letter-spacing: 0.08rem;
+  -webkit-text-stroke: .025rem #fbbe28;
+  margin-bottom: 0.15rem; }
+
+.bindPhone input {
+  font-size: .32rem;
+  font-weight: bold;
+  width: 4.5rem;
+  height: .9rem;
+  margin: 0.5rem 0;
+  text-align: center;
+  border: 0.03rem solid #fbbe28;
+  border-radius: 0.15rem; }
+
+.bindPhone ::-webkit-input-placeholder {
+  color: #999; }
+
+.bindPhone p {
+  font-size: .3rem;
+  text-align: center;
+  color: #bbb; }
+  .bindPhone p a {
+    color: #fbbe28;
+    text-decoration: underline;
+    font-size: .26rem; }
+
+.bindPhone .btn {
+  margin-top: 0.5rem; }
+  .bindPhone .btn img {
+    width: 3.5rem; }
+
+.bottomControl {
+  position: fixed;
+  left: 0;
+  bottom: .2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100%;
+  z-index: 100; }
+  .bottomControl .moreCoupon {
+    margin-bottom: .1rem; }
+    .bottomControl .moreCoupon img {
+      width: 2.5rem; }
+  .bottomControl .dimSum {
+    margin: 0 .2rem; }
+    .bottomControl .dimSum img {
+      width: 1.8rem; }
+  .bottomControl .message {
+    margin-bottom: .1rem; }
+    .bottomControl .message img {
+      width: 2.5rem; }
+
+.mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.4); }
+
+.popup {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 6rem;
+  padding: .35rem;
+  border-radius: 0.5rem;
+  background-color: #fff; }
+
+.receiveDimSum .closeBtn {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem; }
+  .receiveDimSum .closeBtn img {
+    width: 0.52rem; }
+
+.receiveDimSum h4 {
+  color: #fff;
+  font-size: 0.42rem;
+  letter-spacing: 0.08rem;
+  -webkit-text-stroke: .025rem #fbbe28;
+  margin-bottom: 0.15rem; }
+
+.receiveDimSum h5 {
+  margin-top: .2rem;
+  font-size: .38rem;
+  color: #e75b5a; }
+
+.receiveDimSum .icon {
+  margin-top: 0.1rem;
+  height: 2.2rem; }
+
+.receiveDimSum .btnGroup {
+  margin-top: 0.3rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
+  .receiveDimSum .btnGroup .btn img {
+    width: 2.5rem; }
+  .receiveDimSum .btnGroup .btn.right {
+    margin-left: 0.2rem; }
+
+.getTenDanSan .closeBtn {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem; }
+  .getTenDanSan .closeBtn img {
+    width: 0.52rem; }
+
+.getTenDanSan h4 {
+  color: #fff;
+  font-size: 0.42rem;
+  letter-spacing: 0.08rem;
+  -webkit-text-stroke: .025rem #fbbe28;
+  margin-bottom: 0.15rem; }
+
+.getTenDanSan h5 {
+  font-size: 0.36rem;
+  color: #f0b114; }
+  .getTenDanSan h5 span {
+    color: #e75b5a; }
+
+.getTenDanSan p {
+  margin-top: 0.1rem;
+  font-size: 0.26rem;
+  color: #bbbbbb; }
+
+.getTenDanSan .iconGroup .icon {
+  margin-top: 0.2rem;
+  height: 2.2rem; }
+
+.getTenDanSan .iconGroup span {
+  margin-left: -.4rem;
+  font-weight: bold;
+  font-size: .36rem;
+  color: #e75b5a; }
+
+.getTenDanSan .btn {
+  margin-top: 0.3rem; }
+  .getTenDanSan .btn img {
+    width: 3.5rem; }
+
+.getReceiveDimSum p {
+  margin-top: .3rem;
+  margin-bottom: .2rem;
+  color: #999;
+  font-size: .3rem; }
+
+.getReceiveDimSum .btn {
+  margin-top: 0.3rem; }
+  .getReceiveDimSum .btn img {
+    width: 3.5rem; }
+
+.signIn .closeBtn {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem; }
+  .signIn .closeBtn img {
+    width: 0.52rem; }
+
+.signIn h4 {
+  color: #fff;
+  font-size: 0.42rem;
+  letter-spacing: 0.08rem;
+  -webkit-text-stroke: .025rem #fbbe28;
+  margin-bottom: 0.15rem; }
+
+.signIn .icon {
+  width: 2rem;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem; }
+
+.signIn h5 {
+  margin-bottom: .1rem;
+  color: #fbbe28;
+  font-size: 0.34rem; }
+
+.randomGameTimes .closeBtn {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem; }
+  .randomGameTimes .closeBtn img {
+    width: 0.52rem; }
+
+.randomGameTimes h4 {
+  color: #fff;
+  font-size: 0.42rem;
+  letter-spacing: 0.08rem;
+  -webkit-text-stroke: .025rem #fbbe28;
+  margin-bottom: .1rem; }
+
+.randomGameTimes h5 {
+  margin-top: 0.1rem;
+  font-size: 0.32rem;
+  color: #999999; }
+  .randomGameTimes h5 span {
+    color: #e75b5a; }
+
+.randomGameTimes .group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-top: 0.3rem; }
+  .randomGameTimes .group .icon {
+    height: 2.8rem; }
+  .randomGameTimes .group .btn {
+    margin-top: 0.3rem; }
+    .randomGameTimes .group .btn img {
+      width: 3.5rem; }
+
+.gameRule {
+  width: 6.5rem;
+  height: 8.5rem; }
+  .gameRule .closeBtn {
+    position: absolute;
+    top: -0.6rem;
+    right: -0.3rem; }
+    .gameRule .closeBtn img {
+      width: 0.52rem; }
+  .gameRule .content {
+    text-align: center;
+    overflow-y: auto;
+    height: 8rem; }
+    .gameRule .content h4 {
+      color: #fff;
+      font-size: 0.42rem;
+      letter-spacing: 0.08rem;
+      -webkit-text-stroke: .025rem #fbbe28;
+      margin-bottom: 0.15rem; }
+    .gameRule .content h5 {
+      font-size: 0.34rem;
+      color: #e75b5a; }
+    .gameRule .content p {
+      font-size: .28rem;
+      text-align: justify;
+      color: #999;
+      margin-top: 0.1rem; }
+    .gameRule .content .t1 {
+      margin-bottom: 0.1rem; }
+    .gameRule .content .t2 {
+      margin-top: 0.1rem; }
+    .gameRule .content .enhance {
+      margin-top: 0rem;
+      font-weight: bold;
+      color: #fbbe28;
+      text-indent: .6rem; }
+    .gameRule .content .icon {
+      width: 2rem; }
+
+.cookBox .closeBtn {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem; }
+  .cookBox .closeBtn img {
+    width: 0.52rem; }
+
+.cookBox h4 {
+  color: #fff;
+  font-size: 0.42rem;
+  letter-spacing: 0.08rem;
+  -webkit-text-stroke: .025rem #fbbe28; }
+
+.cookBox .icon {
+  margin-top: .3rem;
+  width: 2.5rem; }
+
+.cookBox h5 {
+  margin-top: .15rem;
+  font-size: .3rem;
+  text-align: center;
+  font-weight: normal;
+  color: #999; }
+  .cookBox h5 .enhance {
+    font-weight: bold;
+    color: #fbbe28; }
+  .cookBox h5 .enhanceRed {
+    font-size: .28rem;
+    color: #e75b5a; }
+
+.cookBox .btn {
+  margin-top: 0.3rem; }
+  .cookBox .btn img {
+    width: 3.5rem; }
+
+.openBoxResult {
+  position: relative;
+  width: 6rem;
+  height: 8.56rem;
+  background-size: 100% 100%;
+  padding: 0.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+  .openBoxResult .closeBtn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0; }
+    .openBoxResult .closeBtn img {
+      width: 0.52rem; }
+  .openBoxResult h4 {
+    margin-top: 3.5rem;
+    font-size: 0.28rem;
+    font-weight: normal;
+    color: #333;
+    text-align: center; }
+  .openBoxResult h5 {
+    margin: 0.1rem;
+    font-size: .32rem;
+    color: #333; }
+    .openBoxResult h5 span {
+      font-size: .48rem;
+      color: #e55c5d; }
+  .openBoxResult p {
+    margin-top: 0.2rem;
+    color: #999;
+    font-size: 0.24rem; }
+  .openBoxResult .btn {
+    margin-top: .3rem; }
+    .openBoxResult .btn img {
+      width: 3.5rem; }
+
+.banner {
+  margin-top: .25rem; }
+  .banner img {
+    border-radius: 0.2rem;
+    width: 6rem; }
+
+.myDimSum {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 0.8rem;
+  background-size: 100% 100%;
+  z-index: 100; }
+  .myDimSum .closeBtn {
+    position: fixed;
+    top: 0.2rem;
+    right: 0.2rem; }
+    .myDimSum .closeBtn img {
+      width: 0.52rem; }
+  .myDimSum .menuBg {
+    margin: 0 auto;
+    margin-top: 0.3rem;
+    width: 7rem;
+    padding: .32rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    border-radius: 0.1rem;
+    background-color: #fff; }
+    .myDimSum .menuBg h4 {
+      font-size: .32rem;
+      color: #e55c5d; }
+    .myDimSum .menuBg h5 {
+      margin-top: 0.2rem;
+      font-size: .28rem; }
+      .myDimSum .menuBg h5 span {
+        color: #e55c5d; }
+    .myDimSum .menuBg .menuChart {
+      margin-top: 0.2rem;
+      width: 6.2rem;
+      height: 6.2rem;
+      margin-bottom: 0.1rem;
+      background-size: 100% 100%; }
+      .myDimSum .menuBg .menuChart .dimSumLine {
+        height: 6.2rem;
+        margin-left: 0.7rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap; }
+        .myDimSum .menuBg .menuChart .dimSumLine .dimSumBlock {
+          position: relative;
+          width: 25%;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          -webkit-box-orient: vertical;
+          -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+          flex-direction: column;
+          margin-top: 0.2rem; }
+          .myDimSum .menuBg .menuChart .dimSumLine .dimSumBlock input {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            width: 50%;
+            border: none;
+            height: 100%;
+            background: none;
+            padding-left: 0.2rem;
+            font-weight: bold; }
+          .myDimSum .menuBg .menuChart .dimSumLine .dimSumBlock input {
+            opacity: 0; }
+          .myDimSum .menuBg .menuChart .dimSumLine .dimSumBlock input[type="radio"] + label:before {
+            content: '\2713';
+            color: #fff;
+            font-size: 0.3rem;
+            font-weight: bold;
+            border-radius: 100%;
+            border: 1px solid #fff;
+            display: inline-block;
+            width: .4rem;
+            height: .4rem;
+            position: absolute;
+            right: .18rem;
+            vertical-align: top;
+            cursor: pointer;
+            text-align: center;
+            -webkit-transition: all 250ms ease;
+            transition: all 250ms ease; }
+          .myDimSum .menuBg .menuChart .dimSumLine .dimSumBlock input[type="radio"]:checked + label:before {
+            color: #e55c5d;
+            background-color: #f9bd3c;
+            -webkit-box-shadow: inset 0 0 0 4px #f9bd3c;
+            box-shadow: inset 0 0 0 4px #f9bd3c;
+            border: 1px solid #f9bd3c; }
+          .myDimSum .menuBg .menuChart .dimSumLine .dimSumBlock img {
+            width: 1rem; }
+          .myDimSum .menuBg .menuChart .dimSumLine .dimSumBlock p {
+            color: #fff;
+            padding: 0.02rem 0.15rem;
+            text-align: center;
+            margin-top: 0.12rem;
+            border-radius: 0.2rem; }
+            .myDimSum .menuBg .menuChart .dimSumLine .dimSumBlock p.noneGrey {
+              padding: 0.02rem 0.21rem;
+              background-color: #d0d0d0; }
+            .myDimSum .menuBg .menuChart .dimSumLine .dimSumBlock p.hasRed {
+              background-color: #e55c5d; }
+  .myDimSum .presentDimSum {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.8); }
+    .myDimSum .presentDimSum h4 {
+      font-size: 0.4rem;
+      color: #fabc26; }
+      .myDimSum .presentDimSum h4 span {
+        color: #e75b5a; }
+    .myDimSum .presentDimSum .btnGroup {
+      margin-top: 0.5rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center; }
+      .myDimSum .presentDimSum .btnGroup .btn img {
+        width: 3rem; }
+      .myDimSum .presentDimSum .btnGroup .btn.right {
+        margin-left: 0.4rem; }
+  .myDimSum .giftBtn {
+    margin: 0 auto;
+    margin-top: 0.2rem;
+    width: 7rem;
+    height: 1rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-radius: 0.1rem;
+    background-color: #e55c5d; }
+    .myDimSum .giftBtn img {
+      height: 0.32rem; }
+    .myDimSum .giftBtn p {
+      font-size: 0.32rem;
+      margin-left: 0.2rem;
+      color: #fff; }
+  .myDimSum .tipsForGift {
+    margin-top: 0.1rem;
+    text-align: center;
+    font-size: 0.25rem;
+    color: rgba(255, 255, 255, 0.6); }
+  .myDimSum .giftNav {
+    margin: 0 auto;
+    margin-top: 0.5rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 7rem;
+    border: 1px solid #fff;
+    border-radius: 0.1rem; }
+    .myDimSum .giftNav .btn {
+      width: 50%;
+      height: 0.65rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center; }
+      .myDimSum .giftNav .btn.active {
+        background-color: #fff; }
+      .myDimSum .giftNav .btn p {
+        color: #fff; }
+        .myDimSum .giftNav .btn p.active {
+          color: #99814d; }
+  .myDimSum .receiveAndSentRecord {
+    margin: 0 auto;
+    margin-top: 0.1rem;
+    width: 7rem; }
+    .myDimSum .receiveAndSentRecord .recordLine {
+      padding: 0.2rem 0;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      border-bottom: 1px dotted #fff; }
+      .myDimSum .receiveAndSentRecord .recordLine img {
+        width: 0.8rem;
+        border-radius: 50%;
+        margin-right: 0.2rem;
+        margin-left: 0.2rem; }
+      .myDimSum .receiveAndSentRecord .recordLine p {
+        width: 60%;
+        color: #fff;
+        font-size: 0.3rem; }
+        .myDimSum .receiveAndSentRecord .recordLine p span {
+          font-weight: bold;
+          color: #b54040; }
+        .myDimSum .receiveAndSentRecord .recordLine p.time {
+          width: 40%;
+          text-align: right; }
+        .myDimSum .receiveAndSentRecord .recordLine p.sentName {
+          width: 85%; }
+
+.messageBox {
+  width: 6.5rem; }
+  .messageBox .closeBtn {
+    position: absolute;
+    top: -0.6rem;
+    right: -0.3rem; }
+    .messageBox .closeBtn img {
+      width: 0.52rem; }
+  .messageBox h4 {
+    color: #fff;
+    font-size: 0.42rem;
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.08rem;
+    -webkit-text-stroke: .025rem #fbbe28; }
+  .messageBox .btn img {
+    width: 5.8rem; }
+  .messageBox .messageBlock {
+    margin-top: 0.1rem;
+    width: 5.6rem;
+    height: 4.5rem;
+    padding-bottom: 0.1rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; }
+    .messageBox .messageBlock .messageLine .group {
+      padding: 0.22rem 0;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      border-bottom: 0.01rem dotted #999; }
+    .messageBox .messageBlock .messageLine h5 {
+      color: #333;
+      font-size: .28rem;
+      width: 68%; }
+      .messageBox .messageBlock .messageLine h5 span {
+        color: #e55c5d; }
+    .messageBox .messageBlock .messageLine p {
+      font-size: .24rem;
+      color: #999;
+      text-align: right;
+      width: 32%; }
+  .messageBox .tipsText {
+    margin-top: 0.3rem;
+    font-size: 0.24rem;
+    color: #999;
+    text-align: center; }
+
+.landmark .closeBtn {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem; }
+  .landmark .closeBtn img {
+    width: 0.52rem; }
+
+.landmark h4 {
+  color: #fff;
+  font-size: 0.42rem;
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.08rem;
+  -webkit-text-stroke: .025rem #fbbe28; }
+
+.landmark p {
+  font-size: 0.32rem;
+  color: #999999; }
+  .landmark p span {
+    font-weight: bold;
+    color: #fbbe28; }
+
+.landmark .group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+  .landmark .group p {
+    font-size: 0.28rem;
+    color: #e75b5a; }
+  .landmark .group .icon {
+    margin-top: 0.4rem;
+    width: 2rem; }
+  .landmark .group .btn {
+    margin-top: 0.5rem;
+    margin-bottom: 0.1rem; }
+    .landmark .group .btn img {
+      width: 3.5rem; }
+
+.openLotteryResult .closeBtn {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem; }
+  .openLotteryResult .closeBtn img {
+    width: 0.52rem; }
+
+.openLotteryResult h4 {
+  color: #fff;
+  font-size: 0.42rem;
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.08rem;
+  -webkit-text-stroke: .025rem #fbbe28; }
+
+.openLotteryResult .group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+  .openLotteryResult .group h5 {
+    font-size: 0.32rem;
+    color: #999999; }
+    .openLotteryResult .group h5 span {
+      font-weight: bold;
+      color: #fbbe28; }
+  .openLotteryResult .group .icon {
+    margin-top: 0.2rem;
+    height: 2.2rem; }
+  .openLotteryResult .group .iconBanner {
+    margin-top: .4rem;
+    width: 4.5rem;
+    margin-bottom: .6rem; }
+  .openLotteryResult .group p {
+    text-align: justify;
+    margin-top: 0.2rem;
+    color: #999999;
+    font-size: .26rem; }
+  .openLotteryResult .group .btn {
+    margin-top: 0.3rem; }
+    .openLotteryResult .group .btn img {
+      width: 3.5rem; }

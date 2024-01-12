@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name=viewport content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scale=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>叹碗南粤</title>
+  <link rel="stylesheet" href="./app/css/reset.css">
+  <link rel="stylesheet" href="./app/js/vendor/animate.min.css">
+  <link rel="stylesheet" href="./app/css/main.css">
+  <script src="./app/js/webinit.js"></script>
+  <script>
+    window.API_URL = "API_URL"
+    window.baseImgUrl = "./app/assets/"
+    window.presentUrl = ''
+  </script>
+
+</head>
+
+<body>
+  <input type="hidden" name="" id="openId" value="aaa">
+  <input type="hidden" name="" id="nickname" value="bbb">
+  <input type="hidden" name="" id="headimg" value="https://avatars.githubusercontent.com/u/8706896">
+  <audio id="bgm" src="./app/audio/bgm.mp3" style="display: none" loop="loop"></audio>
+  <audio id="click" src="./app/audio/click.mp3" style="display: none"></audio>
+  <audio id="lottery" src="./app/audio/lottery.mp3" style="display: none"></audio>
+  <!-- 游戏容器 -->
+  <div class="game" id="game"></div>
+  <div id="app" class="app" v-cloak>
+    <!-- 全局弹窗 -->
+    <div v-show="tips.isTipsShow" class="tipsContainer" v-cloak>
+      <div class="tips popup animated zoomIn" v-cloak>
+        <h3>{{tips.title}}</h3>
+        <p v-html="tips.content"></p>
+        <!-- 加一个立即赠送的按钮 -->
+        <div v-if="tips.isTimeOutBtnShow" class="closeBtn" @click="close('tipsAndToDimSum')" v-mp3="click">
+          <img src="./app/assets/popup/twly_toZsBtn.png" alt="">
+        </div>
+        <div v-else class="closeBtn" @click="close('tips')" v-mp3="click">
+          <img src="./app/assets/popup/twly_confirm.png" alt="">
+        </div>
+      </div>
+    </div>
+    <!-- 主页 -->
+    <div v-show="isStartPageShow" class="startPage" style="background-image: url('./app/assets/start/start_bg2.jpg');">
+      <img class="sloganText animated bounceInDown" src="./app/assets/start/start_slogan.png" alt="">
+      <div class="tagWrapper">
+        <img class="tagText animated fadeIn" src="./app/assets/start/start_tag.png" alt="">
+      </div>
+      <img src="./app/assets/start/start_title.png" alt="" class="titleText animated zoomIn">
+      <h4 v-show="!isLoaded" class="loading">{{loadingPercent}}</h4>
+      <div v-show="isLoaded" class="btn animated pulse infinite" @click="close('startPage')" v-mp3="click">
+        <img src="./app/assets/start/start_btn.png" alt="">
+      </div>
+      <img v-show="isLoaded" src="./app/assets/start/start_arrow.png" alt="" class="arrow animated tada infinite">
+    </div>
+    <!-- 分享 -->
+    <div v-show="isShareShow" class="shareMask" @click="close('isShareShow')" v-mp3="click">
+      <img v-if="dimSumSelected>0" class="animated fadeIn" src="./app/assets/share/selectFriend.png" alt="">
+      <img v-else class="animated fadeIn" src="./app/assets/share/shareSelect.png" alt="">
+    </div>
+    <!-- 收到点心 -->
+    <div v-if="popup.isReceiveDimSumShow" class="mask">
+      <div class="receiveDimSum popup animated zoomIn">
+        <div class="closeBtn" @click="close('receiveDimSum')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>亲！送你一{{dimSumList[userInfo.dessert-1].unit+dimSumList[userInfo.dessert-1].name}}</h4>
+        <h5>祝你天天有口福！</h5>
+        <img class="icon" :src="'./app/assets/popup/icon_'+dimSumList[userInfo.dessert-1].key+'.png'" alt="">
+        <div class="btnGroup">
+          <!-- 点击我也参与直接进入地图页面 -->
+          <div class="btn" @click="close('startPage')" v-mp3="click">
+            <img src="./app/assets/popup/twly_joinBtn.png" alt="">
+          </div>
+          <div class="btn right" @click="postReceiveDesserts()" v-mp3="click">
+            <img src="./app/assets/popup/twly_receiveBtn.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 绑定手机前赠送十件蛋散 -->
+    <div v-if="popup.isGetTenDanSanShow" class="mask">
+      <div class="getTenDanSan popup animated zoomIn">
+        <div class="closeBtn" @click="close('getTenDanSan')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>欢迎来到叹碗南粤</h4>
+        <h5>送你
+          <span>10件蛋散 </span>略表心意</h5>
+        <p>点心已存放到“首页”-“我的点心”</p>
+        <div class="iconGroup">
+          <img class="icon" src="./app/assets/popup/icon_ds.png" alt="">
+          <span>*10</span>
+        </div>
+        <div class="btn" @click="close('getTenDanSan')" v-mp3="click">
+          <img src="./app/assets/popup/twly_confirm.png" alt="">
+        </div>
+      </div>
+    </div>
+    <!-- 领取收到的点心 -->
+    <div v-if="popup.isGetReceiveDimSumShow" class="mask">
+      <div class="getReceiveDimSum receiveDimSum popup animated zoomIn">
+        <div class="closeBtn" @click="close('getReceiveDimSum')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>领取成功！</h4>
+        <p>点心已存放到“首页”-“我的点心”</p>
+        <img :src="'./app/assets/popup/icon_'+dimSumList[userInfo.dessert-1].key+'.png'" alt="" class="icon">
+        <div class="btn" @click="close('getReceiveDimSum')" v-mp3="click">
+          <img src="./app/assets/popup/twly_confirm.png" alt="">
+        </div>
+      </div>
+      <div class="banner animated fadeIn" @click="jumpToPage('banner')" v-mp3="click">
+        <img :src="bannerList[bannerNum].logo" alt="">
+      </div>
+    </div>
+    <!-- 每日签到 -->
+    <div v-show="popup.isSignInShow" class="mask">
+      <div class="signIn popup animated zoomIn">
+        <div class="closeBtn" @click="close('signIn')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>签到成功</h4>
+        <img src="./app/assets/popup/twly_signInDice.png" alt="" class="icon">
+        <h5>获得一次掷骰子的机会</h5>
+      </div>
+    </div>
+    <!-- 赠送的游戏次数 -->
+    <div v-show="popup.isGameTimesShow" class="mask">
+      <div class="randomGameTimes popup animated zoomIn">
+        <div class="closeBtn" @click="close('randomGameTimes')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>游戏福利</h4>
+        <h5>活动开始前7天</h5>
+        <h5>每天1次免费挑战<span>赢红包！</span></h5>
+        <div v-if="saveUser.gameType==1" class="group">
+          <img src="./app/assets/landmark/icon_aqds.png" alt="" class="icon">
+          <div class="btn" @click="jumpToPage('twnyPick')">
+            <img src="./app/assets/landmark/landmark_challengeBtn.png" alt="">
+          </div>
+        </div>
+        <div v-else-if="saveUser.gameType==2" class="group">
+          <img src="./app/assets/landmark/icon_sxj.png" alt="" class="icon">
+          <div class="btn" @click="jumpToPage('twnyJump')">
+            <img src="./app/assets/landmark/landmark_challengeBtn.png" alt="">
+          </div>
+        </div>
+        <div v-else-if="saveUser.gameType==3" class="group">
+          <img src="./app/assets/landmark/icon_tyzx.png" alt="" class="icon">
+          <div class="btn" @click="jumpToPage('twnyBall')">
+            <img src="./app/assets/landmark/landmark_challengeBtn.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 头部 -->
+    <div v-show="!isStartPageShow" class="topControl animated slideInDown">
+      <div class="userNameBtn" style="background-image: url('./app/assets/home/twly_userName.png');" @click="showPopup('bindPhone')"
+        v-mp3="click">
+        <h4>{{getPhoneEncrypt}}</h4>
+      </div>
+      <div class="gameRuleBtn" @click="showPopup('gameRule')" v-mp3="click">
+        <img src="./app/assets/home/twly_gameRule.png" alt="">
+      </div>
+    </div>
+    <!-- 绑定手机号 -->
+    <div v-show="popup.isBindPhoneShow" class="mask">
+      <div class="bindPhone popup animated zoomIn">
+        <div class="closeBtn" @click="close('bindPhone')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>关联手机号</h4>
+        <input type="number" v-model='phoneNum' placeholder="请输入您的手机号">
+        <p>还没有账户？
+          <br>
+          <a href="https://github.com/tylerrrkd">点此了解注册绑卡流程 </a>
+        </p>
+        <div class="btn" @click="postSavePhone()" v-mp3="click">
+          <img src="./app/assets/popup/twly_confirm.png" alt="">
+        </div>
+      </div>
+    </div>
+    <!-- 活动规则 -->
+    <div v-show="popup.isGameRuleShow" class="mask">
+      <div class="gameRule popup animated zoomIn">
+        <div class="closeBtn" @click="close('gameRule')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <div class="content">
+          <h4>活动规则</h4>
+          <h5>活动时间：7月25日-9月30日</h5>
+          <p class="t1">1、用户进入活动页面，获得一次投骰子机会，点击“投骰子”，根据点数前进X步，到达地图指定景点停留，根据具体的景点，进入不同的游戏关卡</p>
+          <p class="enhance">A. 五羊雕像：普通抽奖</p>
+          <p class="enhance">B. 上下九：跳一跳关卡（通关得奖）</p>
+          <p class="enhance">C. 爱群大夏：接点心关卡（通关得奖）</p>
+          <p class="enhance">D. 体育中心：踢球关卡（通关得奖）</p>
+          <p class="enhance">E. 广州塔：普通抽奖</p>
+          <p class="t2">游戏通关获得奖品，奖品为随机一款点心、随机红包、定向商户代金券任一种；</p>
+          <p>2、用户首次进入游戏，免费获得10件蛋散。活动开始后的前7天，每天都可以免费获得一次游戏挑战机会（弹窗展示挑战入口）；</p>
+          <p>3、玩家通过抽奖可获得普通点心、传说点心、红包任一种；如抽中传说点心，抽中同时获得9.99元红包；</p>
+          <p>4、每赠送一个点心给好友，即可获得一次额外投骰子机会，每天限4次；</p>
+          <p>5、每天最多投5次骰子；</p>
+          <p>6、玩家可以消耗5款不同的点心各一只，开启一次食神宝箱，宝箱内含现金红包，最高10元；</p>
+          <p>7、同一号码仅限绑定一个微信ID，同一微信号、同一号码均视为同一用户；</p>
+          <p>8、本次活动最终解释权归你所有，如有任何疑问请致电你自己咨询。</p>
+          <img class="icon" src="./app/assets/popup/twly_ruleIcon.png" alt="">
+        </div>
+      </div>
+    </div>
+    <!-- 食神宝箱 -->
+    <div v-show="popup.cookBox.isShow" class="mask">
+      <div class="cookBox popup animated zoomIn">
+        <div class="closeBtn" @click="close('cookBox')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>食神宝箱</h4>
+        <img class="icon" src="./app/assets/popup/twly_cookBoxIcon.png" alt="">
+        <h5 v-if="popup.cookBox.hasTimes">
+          祝贺您集满
+          <span class="enhance">5种特色 </span>点心
+          <br>特此小翼赠送您一个
+          <span class="enhance">宝箱 </span>
+          <br>
+          <span class="enhanceRed">（开启宝箱会随机抵消5只不同点心） </span>
+        </h5>
+        <h5 v-else>您尚未集齐5种点心
+          <br>暂不能开启
+          <span class="enhance">【食神宝箱】 </span>
+          <br>赶紧去
+          <span class="enhance">投掷骰子 </span>收集点心吧！
+        </h5>
+        <div v-if="popup.cookBox.hasTimes" class="btn" @click="postOpenBox()" v-mp3="click">
+          <img src="./app/assets/popup/twly_openBox.png" alt="">
+        </div>
+        <div v-else class="btn" @click="close('cookBox')" v-mp3="click">
+          <img src="./app/assets/popup/twly_knownBtn.png" alt="">
+        </div>
+      </div>
+      <div v-if="!popup.cookBox.hasTimes" class="banner animated fadeIn" @click="jumpToPage('banner')" v-mp3="click">
+        <img :src="bannerList[bannerNum].logo" alt="">
+      </div>
+    </div>
+    <!-- 打开宝箱后 -->
+    <div v-show="popup.openBoxResult.isShow" class="mask">
+      <div class="openBoxResult animated zoomIn" style="background-image: url('./app/assets/popup/openBox_bg.png');">
+        <div class="closeBtn" @click="close('openBoxResult')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>恭喜你
+          <br>获得红包
+        </h4>
+        <h5>
+          <span>{{popup.openBoxResult.money}}</span> 元
+        </h5>
+        <p>奖金已存入您绑定号码的账户内
+          <br>请确保您已注册并完成实名认证才能成功领取喔！
+          <br>到账情况请留意短信通知，获登录APP查询
+        </p>
+        <div class="btn" @click="close('openBoxResult')" v-mp3="click">
+          <img src="./app/assets/popup/twly_confirm.png" alt="">
+        </div>
+      </div>
+      <div v-if="!popup.cookBox.hasTimes" class="banner animated fadeIn" @click="jumpToPage('banner')" v-mp3="click">
+        <img :src="bannerList[bannerNum].logo" alt="">
+      </div>
+    </div>
+    <!-- 底部 -->
+    <div v-show="!isStartPageShow" class="bottomControl animated slideInUp">
+      <div class="moreCoupon" @click="showPopup('moreCoupon')" v-mp3="click">
+        <img src="./app/assets/home/twly_moreCoupon.png" alt="">
+      </div>
+      <div :class="['dimSum', 'animated', 'infinite', initUser.zscount>0?'':'pulse']" @click="showPopup('dimSum')" v-mp3="click">
+        <img src="./app/assets/home/twly_dimSum.png" alt="">
+      </div>
+      <div class="message" @click="showPopup('messageBox')" v-mp3="click">
+        <img src="./app/assets/home/twly_message.png" alt="">
+      </div>
+    </div>
+    <!-- 我的点心 -->
+    <div v-show="popup.isDimSumShow" class="myDimSum animated fadeIn" style="background-image: url('./app/assets/dimSum/menu_Bg.jpg');">
+      <div class="closeBtn" @click="close('dimSum')" v-mp3="click">
+        <img src="./app/assets/popup/twly_closeBtnRed.png" alt="">
+      </div>
+      <div class="menuBg">
+        <h4>我的点心卡&nbsp;&nbsp;&nbsp;&nbsp;No.88888888
+        </h4>
+        <h5>
+          收到点心
+          <span>{{saveUser.receiveCount}} </span>个 赠送点心
+          <span>{{saveUser.presentCount}} </span>个 点心余量
+          <span>{{initUser.desserts?initUser.desserts:'0'}} </span>个
+        </h5>
+        <div class="menuChart" style="background-image: url('./app/assets/dimSum/menu_chart.png');">
+          <div class="dimSumLine">
+            <div class="dimSumBlock" v-for="(item, index) in dessertList">
+              <input v-if="item.value>0&&popup.isPresentDimSumShow==true" type="radio" :id="'menu'+index" :value="index+1" v-model="dimSumSelected">
+              <label :for="'menu'+index">
+                <img :src="'./app/assets/dimSum/menu_'+ dimSumList[index].key +'.png'" alt="">
+              </label>
+              <p :class="[item.value>0?'hasRed':'noneGrey']">{{item.value}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 赠送点心面板 -->
+      <div v-show="popup.isPresentDimSumShow" class="presentDimSum animated slideInUp">
+        <h4 v-if="dimSumList[dimSumSelected-1]">已选择
+          <span>1{{dimSumList[dimSumSelected-1].unit}}
+            <i>#</i>{{dimSumList[dimSumSelected-1].name}}
+            <i>#</i>
+          </span>
+        </h4>
+        <h4 v-else>请在上方勾选点心后，再“选择好友”</h4>
+        <div class="btnGroup">
+          <div class="btn" @click="close('cancelPresentDimSum')" v-mp3="click">
+            <img src="./app/assets/dimSum/gift_cancelBtn.png" alt="">
+          </div>
+          <div class="btn right" @click="showPopup('selectFriend')" v-mp3="click">
+            <img v-if="dimSumSelected" src="./app/assets/dimSum/gift_selectOkay.png" alt="">
+            <img v-else src="./app/assets/dimSum/gift_selectNone.png" alt="">
+          </div>
+        </div>
+      </div>
+      <!-- 赠送点心按钮 -->
+      <div class="giftBtn" @click="showPopup('presentDimSum')" v-mp3="click">
+        <img src="./app/assets/dimSum/menu_gift.png" alt="">
+        <p>赠送点心</p>
+      </div>
+      <p class="tipsForGift">好友收取您的点心后 您可以获得一次摇骰机会</p>
+      <div class="giftNav">
+        <div :class="['btn',isSentShow?'':'active']" @click="changeSentTab()" v-mp3="click">
+          <p :class="isSentShow?'':'active'">领取记录</p>
+        </div>
+        <div :class="['btn',isSentShow?'active':'']" @click="changeSentTab()" v-mp3="click">
+          <p :class="isSentShow?'active':''">赠送记录</p>
+        </div>
+      </div>
+      <div v-if="isSentShow" class="receiveAndSentRecord">
+        <div class="recordLine" v-for="item in zsList">
+          <p class="sentName">赠送
+            <i>#</i>{{userNameSlice(item.receiveName)}}
+            <i>#</i> 1{{dimSumList[item.desserts-1].unit}}
+            <span>{{dimSumList[item.desserts-1].name}} </span>
+          </p>
+          <p class="time">{{formatDateTime(item.updatetime)}}</p>
+        </div>
+      </div>
+      <div v-else class="receiveAndSentRecord">
+        <div class="recordLine" v-for="item in receiveList">
+          <img :src="item.img" alt="">
+          <p>赠送1{{dimSumList[item.desserts-1].unit}}
+            <span>{{dimSumList[item.desserts-1].name}} </span>
+          </p>
+          <p class="time">{{formatDateTime(item.updatetime)}}</p>
+        </div>
+      </div>
+    </div>
+    <!-- 我的信箱 -->
+    <div v-show="popup.isMessageBoxShow" class="mask">
+      <div class="messageBox popup animated zoomIn">
+        <div class="closeBtn" @click="close('messageBox')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>我的信箱</h4>
+        <div class="btn" @click="jumpToPage('messageBox')" v-mp3="click">
+          <img src="./app/assets/popup/messageBox_jumpBtn.png" alt="">
+        </div>
+        <div class="messageBlock">
+          <div class="messageLine" v-for="item in winPrizeList">
+            <div v-if="item.type==1" class="group">
+              <h5>{{actIdList[item.actId]}}获得
+                <span>{{item.money}} </span>元红包
+              </h5>
+              <p>{{formatDateTime(item.createTime)}}</p>
+            </div>
+            <div v-else-if="item.type==2" class="group">
+              <h5>{{actIdList[item.actId]}}获得
+                <span>1只{{item.productName}} </span>
+              </h5>
+              <p>{{formatDateTime(item.createTime)}}</p>
+            </div>
+          </div>
+        </div>
+        <p class="tipsText">红包到账情况请留意短信提醒或登录
+          <br>每给好友赠送1只点心可以获得1次投骰子机会
+        </p>
+      </div>
+    </div>
+    <!-- 到达地标 -->
+    <div v-show="popup.landmark.isShow" class="mask">
+      <div class="landmark popup animated zoomIn">
+        <div class="closeBtn" @click="close('landmark')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>恭喜晒</h4>
+        <p>顺利到达
+          <span>
+            <i>#</i>{{popup.landmark.name}}
+            <i>#</i>
+          </span>
+        </p>
+        <p>{{popup.landmark.content}}</p>
+        <div v-if="popup.landmark.type==3 || popup.landmark.type==15" class="group">
+          <img class="icon" src="./app/assets/landmark/landmark_gift.png" alt="">
+          <div class="btn" @click="postSzLottery()" v-mp3="click">
+            <img src="./app/assets/landmark/landmark_luckBtn.png" alt="">
+          </div>
+        </div>
+        <div v-else class="group">
+          <p>（通关游戏可抽奖）</p>
+          <img v-if="popup.landmark.type==6" class="icon" src="./app/assets/landmark/icon_sxj.png" alt="">
+          <img v-else-if="popup.landmark.type==8" class="icon" src="./app/assets/landmark/icon_aqds.png" alt="">
+          <img v-else-if="popup.landmark.type==13" class="icon" src="./app/assets/landmark/icon_tyzx.png" alt="">
+          <div v-if="popup.landmark.type==6" class="btn" @click="jumpToPage('twnyJump')" v-mp3="click">
+            <img src="./app/assets/landmark/landmark_challengeBtn.png" alt="">
+          </div>
+          <div v-else-if="popup.landmark.type==8" class="btn" @click="jumpToPage('twnyPick')" v-mp3="click">
+            <img src="./app/assets/landmark/landmark_challengeBtn.png" alt="">
+          </div>
+          <div v-else-if="popup.landmark.type==13" class="btn" @click="jumpToPage('twnyBall')" v-mp3="click">
+            <img src="./app/assets/landmark/landmark_challengeBtn.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 摇色子抽奖结果 -->
+    <div v-show="popup.isOpenLotteryResultShow" class="mask">
+      <div class="openLotteryResult popup animated zoomIn">
+        <div class="closeBtn" @click="close('lotteryResult')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>恭喜你</h4>
+        <div v-if="popup.openLotteryResult.type==1" class="group">
+          <h5>获得
+            <span>
+              <i>#</i>{{popup.openLotteryResult.money}}元红包
+              <i>#</i>！
+            </span>
+          </h5>
+          <img class="icon" src="./app/assets/popup/icon_hb.png" alt="">
+          <p>奖金已存入您绑定号码的账户内
+            <br>请确保您已注册并完成实名认证才能成功领取喔！
+            <br>到账情况请留意短信通知，或登录APP查询
+          </p>
+          <div class="btn" @click="showPopup('lotteryResultBox')" v-mp3="click">
+            <img src="./app/assets/popup/twly_watchBtn.png" alt="">
+          </div>
+        </div>
+        <div v-else-if="popup.openLotteryResult.type==2" class="group">
+          <h5>获得1{{dimSumList[popup.openLotteryResult.dessert-1].unit}}
+            <span>
+              <i>#</i>{{dimSumList[popup.openLotteryResult.dessert-1].name}}
+              <i>#</i>
+            </span>
+          </h5>
+          <img class="icon" :src="'./app/assets/popup/icon_'+dimSumList[popup.openLotteryResult.dessert-1].key+'.png'" alt="">
+          <p>点心已存放到“首页”-“我的点心”</p>
+          <div class="btn" @click="showPopup('lotteryResult')" v-mp3="click">
+            <img src="./app/assets/popup/twly_watchBtn.png" alt="">
+          </div>
+        </div>
+        <div v-else-if="popup.openLotteryResult.type==4" class="group">
+          <h5>获得
+            <span>
+              #传说点心鸡公榄#
+            </span>
+          </h5>
+          <img class="icon" src="./app/assets/popup/icon_jgl.png" alt="">
+          <div class="btn" @click="showPopup('jglRedPack')" v-mp3="click">
+            <img src="./app/assets/popup/twly_openBox.png" alt="">
+          </div>
+        </div>
+        <div v-else-if="popup.openLotteryResult.type==5" class="group">
+          <h5>获得
+            <span>
+              #商家优惠#
+            </span>
+          </h5>
+          <img class="iconBanner" :src="popup.openLotteryResult.imgUrl" alt="">
+          <div class="btn" @click="jumpToIconBanner('iconBanner')" v-mp3="click">
+            <img src="./app/assets/popup/twly_watchBtn.png" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="banner animated fadeIn" @click="jumpToPage('banner')" v-mp3="click">
+        <img :src="bannerList[bannerNum].logo" alt="">
+      </div>
+    </div>
+    <!-- 获得鸡公榄开的红包提示 -->
+    <div v-show="popup.isJglRedPackShow" class="mask">
+      <div class="openLotteryResult popup animated zoomIn">
+        <div class="closeBtn" @click="close('jglRedPack')" v-mp3="click">
+          <img src="./app/assets/popup/twly_closeBtn.png" alt="">
+        </div>
+        <h4>恭喜你</h4>
+        <div class="group">
+          <h5>获得
+            <span>
+              <i>#</i>{{popup.openLotteryResult.money}}元红包
+              <i>#</i>！
+            </span>
+          </h5>
+          <img class="icon" src="./app/assets/popup/icon_hb.png" alt="">
+          <p>奖金已存入您绑定号码的账户内
+            <br>请确保您已注册并完成实名认证才能成功领取喔！
+            <br>到账情况请留意短信通知，或登录APP查询
+          </p>
+          <div class="btn" @click="showPopup('lotteryResultBox')" v-mp3="click">
+            <img src="./app/assets/popup/twly_watchBtn.png" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="banner animated fadeIn" @click="jumpToPage('banner')" v-mp3="click">
+        <img :src="bannerList[bannerNum].logo" alt="">
+      </div>
+    </div>
+  </div>
+
+  <!-- 第三方库 -->
+  <script src="./app/js/vendor/polyfill.min.js"></script>
+  <script src="./app/js/vendor/phaser.min.js"></script>
+  <script src="./app/js/vendor/vue.min.js"></script>
+  <!-- 主入口 -->
+  <script src="./app/js/game_util.js"></script>
+  <script src="./app/js/gridData.js"></script>
+  <script src="./app/js/dimSumArray.js"></script>
+  <script src="./app/js/game.js"></script>
+  <script src="./app/js/main.js"></script>
+</body>
+
+</html>
